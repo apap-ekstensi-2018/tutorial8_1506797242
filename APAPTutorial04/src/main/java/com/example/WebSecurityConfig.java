@@ -1,6 +1,9 @@
 package com.example;
 
 import org.springframework.context.annotation.Configuration;
+
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,7 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 			.antMatchers("/").permitAll()
 			.antMatchers("/student/viewall").hasRole("ADMIN")
-			.antMatchers("/student/view/**").hasRole("USER")
+			//.antMatchers("/student/view/**").hasRole("USER")
 			.anyRequest().authenticated()
 			.and()
 			.formLogin()
@@ -31,13 +34,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Autowired
+	DataSource dataSource;
+	
+	@Autowired
 	public void configured(AuthenticationManagerBuilder auth) throws Exception{
-		auth.inMemoryAuthentication()
-		.withUser("admin").password("admin")
-		.roles("ADMIN")
-		.and().withUser("user").password("user")
-		.roles("USER");
+//		auth.inMemoryAuthentication()
+//		.withUser("admin").password("admin")
+//		.roles("ADMIN")
+//		.and().withUser("user").password("user")
+//		.roles("USER");
+	
+		auth.jdbcAuthentication().dataSource(dataSource)
+		.usersByUsernameQuery(
+		"select username,password,enabled from users where username=?")
+		.authoritiesByUsernameQuery(
+		"select username,role from user_roles where username=?");
 	}
-
 }
 

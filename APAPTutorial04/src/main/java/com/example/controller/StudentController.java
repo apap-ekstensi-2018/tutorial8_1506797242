@@ -23,11 +23,17 @@ public class StudentController
     StudentService studentDAO;
 
     @RequestMapping("/student/add")
-    public String add ()
+    public String add()
     {
         return "form-add";
     }
 
+    @RequestMapping("/student/viewform")
+    public String formView (Model model)
+    {
+        return "viewform";
+    }
+    
     @RequestMapping("/student/add/submit")
     public String addSubmit (
             @RequestParam(value = "npm", required = false) String npm,
