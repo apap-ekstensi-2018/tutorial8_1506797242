@@ -21,7 +21,6 @@
 	            </tr>
 	        </thead>
 	        <tbody>
-	        	
 	        	<tr th:each="student, iterationStatus: ${students}" th:class="${iterationStatus.odd} ? 'odd'">
 	        		<td th:text="${iterationStatus.count}"></td>
 	        		<td th:text="${student.npm}"></td>
@@ -36,8 +35,6 @@
 	        </tbody>
 	    </table>
     </div>
-    
-    
     </body>
 </html>
 <script th:inline="javascript">
